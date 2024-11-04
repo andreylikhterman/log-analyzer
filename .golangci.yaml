@@ -40,7 +40,6 @@ linters:
     - godot
     - nestif
     - prealloc
-    - testpackage
     - wsl
 linters-settings:
   lll:
