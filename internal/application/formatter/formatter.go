@@ -1,7 +1,5 @@
 package formatter
 
-//go:generate mockery --name=formatWriter --output=./mocks --outpkg=mocks --filename=mock_formatter.go
-
 import (
 	adoc "analyzer/internal/application/formatter/adoc"
 	markdown "analyzer/internal/application/formatter/markdown"

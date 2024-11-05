@@ -2,6 +2,7 @@ package adoc
 
 import (
 	"analyzer/internal/domain"
+	"analyzer/pkg/output"
 	"fmt"
 	"strings"
 	"time"
@@ -18,9 +19,9 @@ func (w *Formatter) WriteGeneralInfo(builder *strings.Builder, report *domain.Lo
 	w.writeFileNames(builder, report.FileNames)
 	w.writeDate(builder, "Начальная дата", report.StartDate)
 	w.writeDate(builder, "Конечная дата", report.EndDate)
-	fmt.Fprintf(builder, "| Количество запросов             | %-25d\n", report.TotalRequests)
-	fmt.Fprintf(builder, "| Средний размер ответа           | %-25s\n", fmt.Sprintf("%db", report.AvgBodySize))
-	fmt.Fprintf(builder, "| 95p размера ответа              | %-25s\n", fmt.Sprintf("%db", report.Percentile95Size))
+	fmt.Fprintf(builder, "| Количество запросов             | %-25s\n", output.FormatNumber(report.TotalRequests))
+	fmt.Fprintf(builder, "| Средний размер ответа           | %-25s\n", fmt.Sprintf("%sb", output.FormatNumber(report.AvgBodySize)))
+	fmt.Fprintf(builder, "| 95p размера ответа              | %-25s\n", fmt.Sprintf("%sb", output.FormatNumber(report.Percentile95Size)))
 	fmt.Fprintf(builder, "| Среднее время между запросами   | %-25s\n", report.AvgTimeBetweenRequests)
 	builder.WriteString("|====\n\n")
 }
@@ -32,7 +33,7 @@ func (w *Formatter) WriteRequestedResources(builder *strings.Builder, report *do
 	builder.WriteString("| Ресурс                 | Количество                \n")
 
 	for _, resource := range report.SortedRequestedResources[:3] {
-		fmt.Fprintf(builder, "| %-22s | %-25d\n", fmt.Sprintf("`%s`", resource), report.RequestedResources[resource])
+		fmt.Fprintf(builder, "| %-22s | %-25s\n", fmt.Sprintf("`%s`", resource), output.FormatNumber(report.RequestedResources[resource]))
 	}
 
 	builder.WriteString("|====\n\n")
@@ -45,7 +46,8 @@ func (w *Formatter) WriteResponseCodes(builder *strings.Builder, report *domain.
 	builder.WriteString("| Код   | Имя                   | Количество          \n")
 
 	for _, code := range report.SortedResponseCodes[:3] {
-		fmt.Fprintf(builder, "| %-5d | %-21s | %-19d\n", code, report.ResponseCodes[code].Name, report.ResponseCodes[code].Count)
+		fmt.Fprintf(builder, "| %-5d | %-21s | %-19s\n",
+			code, report.ResponseCodes[code].Name, output.FormatNumber(report.ResponseCodes[code].Count))
 	}
 
 	builder.WriteString("|====\n\n")
@@ -62,7 +64,7 @@ func (w *Formatter) WriteTopIPAddresses(builder *strings.Builder, report *domain
 	builder.WriteString("| IP-адрес              | Количество запросов\n")
 
 	for _, ipCount := range report.TopIPAddresses {
-		fmt.Fprintf(builder, "| %-21s | %-25d\n", ipCount.IP, ipCount.Count)
+		fmt.Fprintf(builder, "| %-21s | %-25s\n", ipCount.IP, output.FormatNumber(ipCount.Count))
 	}
 
 	builder.WriteString("|====\n\n")
