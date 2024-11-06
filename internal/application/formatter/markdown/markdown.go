@@ -15,7 +15,7 @@ func (w *Formatter) WriteGeneralInfo(builder *strings.Builder, report *domain.Lo
 	builder.WriteString("| **Метрика**                     | **Значение**              |\n")
 	builder.WriteString("|---------------------------------|---------------------------|\n")
 
-	w.writeFileNames(builder, report.FileNames)
+	w.writeFileOrURLNames(builder, report.FileNames, report.URLName)
 	w.writeDate(builder, "Начальная дата", report.StartDate)
 	w.writeDate(builder, "Конечная дата", report.EndDate)
 	fmt.Fprintf(builder, "| Количество запросов             | %-25s |\n", output.FormatNumber(report.TotalRequests))
@@ -66,7 +66,12 @@ func (w *Formatter) WriteTopIPAddresses(builder *strings.Builder, report *domain
 	builder.WriteString("\n")
 }
 
-func (w *Formatter) writeFileNames(builder *strings.Builder, fileNames []string) {
+func (w *Formatter) writeFileOrURLNames(builder *strings.Builder, fileNames []string, urlName string) {
+	if len(fileNames) == 0 {
+		fmt.Fprintf(builder, "| URL                             | %-25s |\n", "`"+urlName+"`")
+		return
+	}
+
 	for i, fileName := range fileNames {
 		if i == 0 {
 			fmt.Fprintf(builder, "| Файл(-ы)                        | %-25s |\n", "`"+fileName+"`")

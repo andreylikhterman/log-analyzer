@@ -116,6 +116,7 @@ func (analyzer *LogAnalyzer) initReport(records []domain.LogRecord, config *doma
 		RequestedResources: make(map[string]int),
 		ResponseCodes:      make(map[int]domain.ResponseCode),
 		FileNames:          analyzer.getFileNames(config),
+		URLName:            analyzer.getURLNames(config),
 		StartDate:          config.From,
 		EndDate:            config.To,
 		TotalRequests:      len(records),
@@ -181,7 +182,7 @@ func (analyzer *LogAnalyzer) calculateAvgRequestTime(records []domain.LogRecord,
 
 func (analyzer *LogAnalyzer) getFileNames(config *domain.Config) []string {
 	if config.TypePath == "url" {
-		return []string{config.Path}
+		return []string{}
 	}
 
 	fileNames := make([]string, 0)
@@ -193,6 +194,14 @@ func (analyzer *LogAnalyzer) getFileNames(config *domain.Config) []string {
 	}
 
 	return fileNames
+}
+
+func (analyzer *LogAnalyzer) getURLNames(config *domain.Config) string {
+	if config.TypePath != "url" {
+		return ""
+	}
+
+	return config.Path
 }
 
 func (analyzer *LogAnalyzer) setTopIPAddresses(report *domain.LogReport, ipRequests map[string]int) {

@@ -4,6 +4,7 @@ import "time"
 
 type LogReport struct {
 	FileNames                []string
+	URLName                  string
 	StartDate                time.Time
 	EndDate                  time.Time
 	TotalRequests            int
