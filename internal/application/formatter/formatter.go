@@ -8,6 +8,11 @@ import (
 	"strings"
 )
 
+const (
+	formatADOC     = "adoc"
+	formatMarkdown = "markdown"
+)
+
 type formatWriter interface {
 	WriteGeneralInfo(builder *strings.Builder, report *domain.LogReport)
 	WriteRequestedResources(builder *strings.Builder, report *domain.LogReport)
@@ -25,9 +30,9 @@ func (formatter *Formatter) Format(report *domain.LogReport, format string) (str
 	var writer formatWriter
 
 	switch format {
-	case "markdown":
+	case formatMarkdown:
 		writer = &markdown.Formatter{}
-	case "adoc":
+	case formatADOC:
 		writer = &adoc.Formatter{}
 	default:
 		return "", fmt.Errorf("неподдерживаемый формат: %s", format)
