@@ -5,12 +5,32 @@ import (
 	"log"
 )
 
+type ParserLog interface {
+	Parse(config *domain.Config) ([]domain.LogRecord, error)
+}
+
+type FilterLog interface {
+	Filter(records []domain.LogRecord, config *domain.Config) []domain.LogRecord
+}
+
+type LogAnalyzer interface {
+	Analyze(records []domain.LogRecord, config *domain.Config) (domain.LogReport, error)
+}
+
+type Formatter interface {
+	Format(report *domain.LogReport, format string) (string, error)
+}
+
+type Saver interface {
+	Save(output, format, name string) error
+}
+
 type AnalyzerApp struct {
-	LogParser   domain.ParserLog
-	LogFilter   domain.FilterLog
-	LogAnalyzer domain.LogAnalyzer
-	Formatter   domain.Formatter
-	Saver       domain.Saver
+	LogParser   ParserLog
+	LogFilter   FilterLog
+	LogAnalyzer LogAnalyzer
+	Formatter   Formatter
+	Saver       Saver
 }
 
 func (app *AnalyzerApp) Run(config *domain.Config) {

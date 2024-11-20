@@ -5,13 +5,17 @@ import (
 	"log"
 )
 
-type ParserRequest struct{}
-
-func NewParserRequest() *ParserRequest {
-	return &ParserRequest{}
+type ParserRequest interface {
+	Parse(map[string]string) domain.Config
 }
 
-func (parser *ParserRequest) Parse(flags map[string]string) domain.Config {
+type SimpleParserRequest struct{}
+
+func NewParserRequest() *SimpleParserRequest {
+	return &SimpleParserRequest{}
+}
+
+func (parser *SimpleParserRequest) Parse(flags map[string]string) domain.Config {
 	config := domain.Config{}
 
 	err := config.AddPath(flags["path"])
