@@ -1,27 +1,16 @@
 package input
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/vorduin/slices"
 )
 
 type RequestTemplate struct {
-	Name          string
 	RequeredFlags []string
 	OptionalFlags []string
-}
-
-func checkName(pattern RequestTemplate, parts []string) error {
-	if parts[0] != pattern.Name {
-		return fmt.Errorf("неверная команда: %s", parts[0])
-	}
-
-	return nil
 }
 
 func checkFlags(pattern RequestTemplate, parts []string) error {
@@ -49,7 +38,7 @@ func checkCountFlags(pattern RequestTemplate, parts []string) error {
 		}
 	}
 
-	for i := 1; i < len(parts)-1; i += 2 {
+	for i := 0; i < len(parts)-1; i += 2 {
 		if !(parts[i][0:2] == "--" && parts[i+1][0:2] != "--") {
 			return fmt.Errorf("неверный запрос")
 		}
@@ -77,22 +66,9 @@ func getFlags(pattern RequestTemplate, parts []string) map[string]string {
 }
 
 func Request(pattern RequestTemplate) (configMap map[string]string) {
-	reader := bufio.NewReader(os.Stdin)
+	parts := os.Args[1:]
 
-	input, err := reader.ReadString('\n')
-	if err != nil {
-		log.Fatalf("Ошибка: %v", err)
-	}
-
-	input = strings.TrimSpace(input)
-	parts := strings.Fields(input)
-
-	err = checkName(pattern, parts)
-	if err != nil {
-		log.Fatalf("Ошибка: %v", err)
-	}
-
-	err = checkFlags(pattern, parts)
+	err := checkFlags(pattern, parts)
 	if err != nil {
 		log.Fatalf("Ошибка: %v", err)
 	}

@@ -12,7 +12,6 @@ import (
 
 func main() {
 	requestTemplate := input.RequestTemplate{
-		Name:          "analyzer",
 		RequeredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
