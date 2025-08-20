@@ -9,14 +9,14 @@ import (
 )
 
 type RequestTemplate struct {
-	RequeredFlags []string
+	RequiredFlags []string
 	OptionalFlags []string
 }
 
 func checkFlags(pattern RequestTemplate, parts []string) error {
 	for _, word := range parts {
 		if word[0:2] == "--" {
-			if !slices.Contains(pattern.RequeredFlags, word[2:]) && !slices.Contains(pattern.OptionalFlags, word[2:]) {
+			if !slices.Contains(pattern.RequiredFlags, word[2:]) && !slices.Contains(pattern.OptionalFlags, word[2:]) {
 				return fmt.Errorf("неизвестный флаг: %s", word)
 			}
 		}
@@ -26,7 +26,7 @@ func checkFlags(pattern RequestTemplate, parts []string) error {
 }
 
 func checkCountFlags(pattern RequestTemplate, parts []string) error {
-	for _, flag := range pattern.RequeredFlags {
+	for _, flag := range pattern.RequiredFlags {
 		if slices.Count(parts, "--"+flag) != 1 {
 			return fmt.Errorf("флаг %s не указан или указан более одного раза", flag)
 		}
@@ -50,7 +50,7 @@ func checkCountFlags(pattern RequestTemplate, parts []string) error {
 func getFlags(pattern RequestTemplate, parts []string) map[string]string {
 	flags := make(map[string]string)
 
-	for _, flag := range pattern.RequeredFlags {
+	for _, flag := range pattern.RequiredFlags {
 		flags[flag] = parts[slices.Index(parts, "--"+flag)+1]
 	}
 

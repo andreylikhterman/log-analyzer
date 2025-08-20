@@ -12,7 +12,7 @@ import (
 
 func main() {
 	requestTemplate := input.RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 

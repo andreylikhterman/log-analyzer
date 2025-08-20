@@ -9,7 +9,7 @@ import (
 
 func TestCheckFlags_Valid(t *testing.T) {
 	requestTemplate := RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 
@@ -19,7 +19,7 @@ func TestCheckFlags_Valid(t *testing.T) {
 
 func TestCheckFlags_Invalid(t *testing.T) {
 	requestTemplate := RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 
@@ -29,7 +29,7 @@ func TestCheckFlags_Invalid(t *testing.T) {
 
 func TestCheckCountFlags_Valid(t *testing.T) {
 	requestTemplate := RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 
@@ -39,7 +39,7 @@ func TestCheckCountFlags_Valid(t *testing.T) {
 
 func TestCheckCountFlags_Invalid(t *testing.T) {
 	requestTemplate := RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 
@@ -49,7 +49,7 @@ func TestCheckCountFlags_Invalid(t *testing.T) {
 
 func TestGetFlags_Valid(t *testing.T) {
 	requestTemplate := RequestTemplate{
-		RequeredFlags: []string{"path"},
+		RequiredFlags: []string{"path"},
 		OptionalFlags: []string{"from", "to", "format", "filter-field", "filter-value"},
 	}
 
